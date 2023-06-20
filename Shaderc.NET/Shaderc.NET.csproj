@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net7.0</TargetFrameworks>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		
+		<ReleaseVersion>0.2.0</ReleaseVersion>		
+		<AssemblyVersion>$(ReleaseVersion)</AssemblyVersion>
+		<PackageVersion>$(ReleaseVersion)</PackageVersion>
+		
+		<Description>Shaderc binding for .net</Description>
+		<RepositoryUrl>https://github.com/Tacodiva/Shaderc.NET.git</RepositoryUrl>
+		<PackageTags>vulkan opengl shaderc glsl hlsl net binding shader</PackageTags>
+		
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		
+		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+		<PackageProjectUrl>https://github.com/Tacodiva/Shaderc.NET</PackageProjectUrl>
+		<License>MIT</License>
+		<Authors>Jean-Philippe Bruyère</Authors>
+		<Copyright>Copyright 2020 (c) Jean-Philippe Bruyère. All rights reserved.</Copyright>
+		<PackageReleaseNotes>
+		</PackageReleaseNotes>
+
+		<SynchReleaseVersion>false</SynchReleaseVersion>
+		<NoWarn>$(NoWarn);1591</NoWarn>		
+	</PropertyGroup>
+</Project>
