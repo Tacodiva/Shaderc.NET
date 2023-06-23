@@ -50,7 +50,7 @@ public class ShaderCompilationResult : IDisposable {
     /// <summary>
     /// Returns a span containing the bytes of the compilation output.
     /// </summary>
-    public unsafe Span<byte> CodeSpan => new Span<byte>((void*)CodePointer, (int)CodePointer);
+    public unsafe Span<byte> CodeSpan => new Span<byte>((void*)CodePointer, (int)CodeLength);
     /// <summary>
     /// Returns an array containing a copy of the bytes of the compilation output.
     /// </summary>
