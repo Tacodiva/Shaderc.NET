@@ -11,6 +11,7 @@ namespace Shaderc;
 public class ShaderCompilerOptions : IDisposable, ICloneable {
     public IntPtr Handle { get; private set; }
     static int curId;//id counter
+    static object staticLock = new object();
     readonly internal int id;//dic key
     readonly internal bool includeEnabled;
 
@@ -47,8 +48,10 @@ public class ShaderCompilerOptions : IDisposable, ICloneable {
         this.Handle = handle;
         if (handle == IntPtr.Zero)
             throw new Exception("error");
-        id = curId++;
-        optionsDic.Add(id, this);
+        lock (staticLock) {
+            id = curId++;
+            optionsDic.Add(id, this);
+        }
         includeEnabled = enableIncludes;
         if (enableIncludes)
             SetIncludeCallbacks();
@@ -59,7 +62,8 @@ public class ShaderCompilerOptions : IDisposable, ICloneable {
 
     static IntPtr HandlePFN_IncludeResolve(IntPtr userData, string requestedSource, int type, string requestingSource, UIntPtr includeDepth) {
 
-        ShaderCompilerOptions opts = optionsDic[userData.ToInt32()];
+        ShaderCompilerOptions opts;
+        lock (staticLock) opts = optionsDic[userData.ToInt32()];
         string content = "", incFile = "";
 
         if (!opts.IncludeResolver.TryFindInclude(requestingSource, requestedSource, (ShaderIncludeType)type, out incFile, out content)) {
@@ -257,7 +261,7 @@ public class ShaderCompilerOptions : IDisposable, ICloneable {
         if (Handle == IntPtr.Zero)
             return;
         if (disposing)
-            optionsDic.Remove(id);
+            lock (staticLock) optionsDic.Remove(id);
         else
             Console.WriteLine("[ShadercNET] Warning: ShaderCompilerOptions disposed by finalyser. Use the Dispose method instead. ");
 
