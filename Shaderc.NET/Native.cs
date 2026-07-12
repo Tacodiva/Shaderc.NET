@@ -313,54 +313,54 @@ public struct ShaderIncludeResult {
 // the #include request.  The includer owns the result object and its contents,
 // and both must remain valid until the release callback is called on the result
 // object.
-internal delegate IntPtr PFN_IncludeResolve(IntPtr userData, string requestedSource, int type, string requestingSource, UIntPtr includeDepth);
+public delegate IntPtr PFN_IncludeResolve(IntPtr userData, string requestedSource, int type, string requestingSource, UIntPtr includeDepth);
 // An includer callback type for destroying an include result.
-internal delegate void PFN_IncludeResultRelease(IntPtr userData, IntPtr includeResult);
+public delegate void PFN_IncludeResultRelease(IntPtr userData, IntPtr includeResult);
 
-public static class ShadercNativeMethods {
+public static unsafe class ShadercNativeMethods {
     const string lib = "shaderc_shared";
 
     [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern IntPtr shaderc_compiler_initialize();
+    public static extern IntPtr shaderc_compiler_initialize();
     [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compiler_release(IntPtr sh);
+    public static extern void shaderc_compiler_release(IntPtr sh);
     [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern IntPtr shaderc_compile_options_initialize();
+    public static extern IntPtr shaderc_compile_options_initialize();
     [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_release(IntPtr options);
+    public static extern void shaderc_compile_options_release(IntPtr options);
     [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_result_release(IntPtr options);
+    public static extern void shaderc_result_release(IntPtr options);
 
     [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern ulong shaderc_result_get_length(IntPtr result);
+    public static extern ulong shaderc_result_get_length(IntPtr result);
     [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern ulong shaderc_result_get_num_warnings(IntPtr result);
+    public static extern ulong shaderc_result_get_num_warnings(IntPtr result);
     [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern ulong shaderc_result_get_num_errors(IntPtr result);
+    public static extern ulong shaderc_result_get_num_errors(IntPtr result);
     [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern ShaderCompilationStatus shaderc_result_get_compilation_status(IntPtr result);
+    public static extern ShaderCompilationStatus shaderc_result_get_compilation_status(IntPtr result);
     [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern IntPtr shaderc_result_get_bytes(IntPtr result);
+    public static extern IntPtr shaderc_result_get_bytes(IntPtr result);
     [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern IntPtr shaderc_result_get_error_message(IntPtr result);
+    public static extern IntPtr shaderc_result_get_error_message(IntPtr result);
 
     [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_get_spv_version(out SpirVVersion version, out uint revision);
+    public static extern void shaderc_get_spv_version(out SpirVVersion version, out uint revision);
 
     // Parses the version and profile from a given null-terminated string
     // containing both version and profile, like: '450core'. Returns false if
     // the string can not be parsed. Returns true when the parsing succeeds. The
     // parsed version and profile are returned through arguments.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern bool shaderc_parse_version_profile(string str, out int version, out ShaderProfile profile);
+    public static extern bool shaderc_parse_version_profile(string str, out int version, out ShaderProfile profile);
 
     // Sets includer callback functions.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_include_callbacks(IntPtr options, IntPtr resolver, IntPtr result_releaser, IntPtr user_data);
+    public static extern void shaderc_compile_options_set_include_callbacks(IntPtr options, IntPtr resolver, IntPtr result_releaser, IntPtr user_data);
 
 
     [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern IntPtr shaderc_compile_options_clone(IntPtr options);
+    public static extern IntPtr shaderc_compile_options_clone(IntPtr options);
     // Adds a predefined macro to the compilation options. This has the same
     // effect as passing -Dname=value to the command-line compiler.  If value
     // is NULL, it has the same effect as passing -Dname to the command-line
@@ -373,31 +373,31 @@ public static class ShadercNativeMethods {
     // a valueless macro, the value argument should be a null pointer or the
     // value_length should be 0u.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_add_macro_definition(IntPtr options, string name, ulong name_length, string value, ulong value_length);
+    public static extern void shaderc_compile_options_add_macro_definition(IntPtr options, string name, ulong name_length, string value, ulong value_length);
     // Sets the source language.  The default is GLSL.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_source_language(IntPtr options, ShaderSourceLanguage lang);
+    public static extern void shaderc_compile_options_set_source_language(IntPtr options, ShaderSourceLanguage lang);
     // Sets the compiler mode to generate debug information in the output.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_generate_debug_info(IntPtr options);
+    public static extern void shaderc_compile_options_set_generate_debug_info(IntPtr options);
     // Sets the compiler optimization level to the given level. Only the last one
     // takes effect if multiple calls of this function exist.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_optimization_level(IntPtr options, ShaderOptimizationLevel level);
+    public static extern void shaderc_compile_options_set_optimization_level(IntPtr options, ShaderOptimizationLevel level);
     // Forces the GLSL language version and profile to a given pair. The version
     // number is the same as would appear in the #version annotation in the source.
     // Version and profile specified here overrides the #version annotation in the
     // source. Use profile: 'shaderc_profile_none' for GLSL versions that do not
     // define profiles, e.g. versions below 150.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_forced_version_profile(IntPtr options, int version, ShaderProfile profile);
+    public static extern void shaderc_compile_options_set_forced_version_profile(IntPtr options, int version, ShaderProfile profile);
 
     // Sets the compiler mode to suppress warnings, overriding warnings-as-errors
     // mode. When both suppress-warnings and warnings-as-errors modes are
     // turned on, warning messages will be inhibited, and will not be emitted
     // as error messages.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_suppress_warnings(IntPtr options);
+    public static extern void shaderc_compile_options_set_suppress_warnings(IntPtr options);
 
     // Sets the target shader environment, affecting which warnings or errors will
     // be issued.  The version will be for distinguishing between different versions
@@ -405,7 +405,7 @@ public static class ShadercNativeMethods {
     // a value listed in shaderc_env_version.  The 0 value maps to Vulkan 1.0 if
     // |target| is Vulkan, and it maps to OpenGL 4.5 if |target| is OpenGL.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_target_env(IntPtr options, ShaderTargetEnvironment target, ShaderEnvironmentVersion version);
+    public static extern void shaderc_compile_options_set_target_env(IntPtr options, ShaderTargetEnvironment target, ShaderEnvironmentVersion version);
 
     // Sets the target SPIR-V version. The generated module will use this version
     // of SPIR-V.  Each target environment determines what versions of SPIR-V
@@ -413,89 +413,98 @@ public static class ShadercNativeMethods {
     // required to be supported by the target environment.  E.g. Default to SPIR-V
     // 1.0 for Vulkan 1.0 and SPIR-V 1.3 for Vulkan 1.1.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_target_spirv(IntPtr options, SpirVVersion version);
+    public static extern void shaderc_compile_options_set_target_spirv(IntPtr options, SpirVVersion version);
 
     // Sets the compiler mode to treat all warnings as errors. Note the
     // suppress-warnings mode overrides this option, i.e. if both
     // warning-as-errors and suppress-warnings modes are set, warnings will not
     // be emitted as error messages.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_warnings_as_errors(IntPtr options);
+    public static extern void shaderc_compile_options_set_warnings_as_errors(IntPtr options);
 
     // Sets a resource limit.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_limit(IntPtr options, ShaderLimit limit, int value);
+    public static extern void shaderc_compile_options_set_limit(IntPtr options, ShaderLimit limit, int value);
 
     // Sets whether the compiler should automatically assign bindings to uniforms
     // that aren't already explicitly bound in the shader source.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_auto_bind_uniforms(IntPtr options, bool auto_bind);
+    public static extern void shaderc_compile_options_set_auto_bind_uniforms(IntPtr options, bool auto_bind);
 
     // Sets whether the compiler should use HLSL IO mapping rules for bindings.
     // Defaults to false.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_hlsl_io_mapping(IntPtr options, bool hlsl_iomap);
+    public static extern void shaderc_compile_options_set_hlsl_io_mapping(IntPtr options, bool hlsl_iomap);
 
     // Sets whether the compiler should determine block member offsets using HLSL
     // packing rules instead of standard GLSL rules.  Defaults to false.  Only
     // affects GLSL compilation.  HLSL rules are always used when compiling HLSL.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_hlsl_offsets(IntPtr options, bool hlsl_offsets);
+    public static extern void shaderc_compile_options_set_hlsl_offsets(IntPtr options, bool hlsl_offsets);
 
     // Sets the base binding number used for for a uniform resource type when
     // automatically assigning bindings.  For GLSL compilation, sets the lowest
     // automatically assigned number.  For HLSL compilation, the regsiter number
     // assigned to the resource is added to this specified base.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_binding_base(IntPtr options, ShaderUniformKind kind, UInt32 _base);
+    public static extern void shaderc_compile_options_set_binding_base(IntPtr options, ShaderUniformKind kind, UInt32 _base);
 
     // Like shaderc_compile_options_set_binding_base, but only takes effect when
     // compiling a given shader stage.  The stage is assumed to be one of vertex,
     // fragment, tessellation evaluation, tesselation control, geometry, or compute.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_binding_base_for_stage(IntPtr options, ShaderKind shader_kind, ShaderUniformKind kind, UInt32 _base);
+    public static extern void shaderc_compile_options_set_binding_base_for_stage(IntPtr options, ShaderKind shader_kind, ShaderUniformKind kind, UInt32 _base);
 
     // Sets whether the compiler should automatically assign locations to
     // uniform variables that don't have explicit locations in the shader source.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_auto_map_locations(IntPtr options, bool auto_map);
+    public static extern void shaderc_compile_options_set_auto_map_locations(IntPtr options, bool auto_map);
 
     // Sets a descriptor set and binding for an HLSL register in the given stage.
     // This method keeps a copy of the string data.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_hlsl_register_set_and_binding_for_stage(IntPtr options, ShaderKind shader_kind, string reg, string set, string binding);
+    public static extern void shaderc_compile_options_set_hlsl_register_set_and_binding_for_stage(IntPtr options, ShaderKind shader_kind, string reg, string set, string binding);
 
     // Like shaderc_compile_options_set_hlsl_register_set_and_binding_for_stage,
     // but affects all shader stages.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_hlsl_register_set_and_binding(IntPtr options, string reg, string set, string binding);
+    public static extern void shaderc_compile_options_set_hlsl_register_set_and_binding(IntPtr options, string reg, string set, string binding);
 
     // Sets whether the compiler should enable extension
     // SPV_GOOGLE_hlsl_functionality1.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_hlsl_functionality1(IntPtr options, bool enable);
+    public static extern void shaderc_compile_options_set_hlsl_functionality1(IntPtr options, bool enable);
 
     // Sets whether the compiler should invert position.Y output in vertex shader.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_invert_y(IntPtr options, bool enable);
+    public static extern void shaderc_compile_options_set_invert_y(IntPtr options, bool enable);
 
     // Sets whether the compiler generates code for max and min builtins which,
     // if given a NaN operand, will return the other operand. Similarly, the clamp
     // builtin will favour the non-NaN operands, as if clamp were implemented
     // as a composition of max and min.
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void shaderc_compile_options_set_nan_clamp(IntPtr options, bool enable);
+    public static extern void shaderc_compile_options_set_nan_clamp(IntPtr options, bool enable);
 
 
 
     [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern IntPtr shaderc_compile_into_spv(
+    public static extern IntPtr shaderc_compile_into_spv(
         IntPtr compiler,
-        string source,
-        UInt64 source_size,
+        byte* source,
+        nuint source_size,
         byte shader_kind,
-        string input_file,
-        string entry_point,
+        byte* input_file,
+        byte* entry_point,
         IntPtr additional_options);
 
+    [DllImport(lib, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+    public static extern IntPtr shaderc_compile_into_preprocessed_text(
+        IntPtr compiler,
+        byte* source,
+        nuint source_size,
+        byte shader_kind,
+        byte* input_file,
+        byte* entry_point,
+        IntPtr additional_options);
 }

@@ -44,14 +44,14 @@ public class ShaderCompiler : IDisposable {
     /// #pragma annotation is supported. If the shader kind is set to one of the default shader kinds, the compiler will fall back to the default shader
     /// kind in case it failed to deduce the shader kind from source string.</param>
     /// <param name="entry_point">Entry point.</param>
-    public ShaderCompilationResult Compile(string path, ShaderKind shaderKind, string entry_point = "main") {
-        if (!File.Exists(path))
-            throw new FileNotFoundException("SPIRV file not found", path);
-        string source = "";
-        using (StreamReader sr = new StreamReader(path))
-            source = sr.ReadToEnd();
-        return Compile(source, path, shaderKind, entry_point);
-    }
+    // public ShaderCompilationResult Compile(string path, ShaderKind shaderKind, string entry_point = "main") {
+    //     if (!File.Exists(path))
+    //         throw new FileNotFoundException("SPIRV file not found", path);
+    //     string source = "";
+    //     using (StreamReader sr = new StreamReader(path))
+    //         source = sr.ReadToEnd();
+    //     return Compile(source, path, shaderKind, entry_point);
+    // }
 
     /// <summary>
     /// Takes a GLSL source string and the associated shader kind, input file
@@ -69,9 +69,13 @@ public class ShaderCompiler : IDisposable {
     /// #pragma annotation is supported. If the shader kind is set to one of the default shader kinds, the compiler will fall back to the default shader
     /// kind in case it failed to deduce the shader kind from source string.</param>
     /// <param name="entry_point">defines the name of the entry point to associate with this GLSL source.</param>
-    public ShaderCompilationResult Compile(string source, string fileName, ShaderKind shaderKind, string entry_point = "main") {
-        return new ShaderCompilationResult(ShadercNativeMethods.shaderc_compile_into_spv(Handle, source, (ulong)source.Length, (byte)shaderKind, fileName, entry_point, Options.Handle));
-    }
+    // public ShaderCompilationResult Compile(string source, string fileName, ShaderKind shaderKind, string entry_point = "main") {
+    //     return new ShaderCompilationResult(ShadercNativeMethods.shaderc_compile_into_spv(Handle, source, (ulong)source.Length, (byte)shaderKind, fileName, entry_point, Options.Handle));
+    // }
+
+    // public ShaderCompilationResult Preprocess(string source, string fileName, ShaderKind shaderKind, string entry_point = "main") {
+    //     return new ShaderCompilationResult(ShadercNativeMethods.shaderc_compile_into_preprocessed_text(Handle, source, (ulong)source.Length, (byte)shaderKind, fileName, entry_point, Options.Handle));
+    // }
 
     public void Dispose() {
         Dispose(true);

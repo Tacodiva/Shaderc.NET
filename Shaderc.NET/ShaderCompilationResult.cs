@@ -3,6 +3,7 @@
 // This code is licensed under the MIT license (MIT) (http://opensource.org/licenses/MIT)
 using System;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Shaderc;
 
@@ -55,6 +56,8 @@ public class ShaderCompilationResult : IDisposable {
     /// Returns an array containing a copy of the bytes of the compilation output.
     /// </summary>
     public unsafe byte[] CodeArray => CodeSpan.ToArray();
+
+    public unsafe string CodeString => Encoding.UTF8.GetString((byte*)CodePointer, (int)CodeLength);
 
     public void Dispose() {
         Dispose(true);
