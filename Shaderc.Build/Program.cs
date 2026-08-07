@@ -11,9 +11,9 @@ DirectoryPath shadercPath = Argument("shaderc-path", "Native");
 DirectoryPath shadercOutput = Argument("shaderc-output", "Shaderc.NET");
 
 const string shadercContainerImageDefaultName = "shaderc-build";
-string shadercContainerImage = Argument("shaderc-container-image", "");
-DirectoryPath shadercContainerShadercPath = Argument("shaderc-container-shaderc-path", "/shaderc");
-DirectoryPath shadercContainerBuildPath = Argument("shaderc-container-build-path", "/shaderc/build");
+string shadercContainerImage = Argument("container-image", "");
+DirectoryPath shadercContainerShadercPath = Argument("container-shaderc-path", "/shaderc");
+DirectoryPath shadercContainerBuildPath = Argument("container-build-path", "/shaderc/build");
 
 string[] sharedCMakeOptions = [
     "-D", "CMAKE_BUILD_TYPE=RelWithDebugInfo",
@@ -35,6 +35,8 @@ string[] windowsCMakeOptions = [
 
 Task("Clean")
     .Does(() => {
+        DotNetClean(".");
+
         DeleteDirectory(shadercPath, new() {
             Force = true,
             Recursive = true
