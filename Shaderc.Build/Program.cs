@@ -16,7 +16,7 @@ DirectoryPath shadercContainerShadercPath = Argument("container-shaderc-path", "
 DirectoryPath shadercContainerBuildPath = Argument("container-build-path", "/shaderc/build");
 
 string[] sharedCMakeOptions = [
-    "-D", "CMAKE_BUILD_TYPE=RelWithDebugInfo",
+    "-D", "CMAKE_BUILD_TYPE=Release",
     "-D", "SHADERC_ENABLE_HLSL=0",
     "-D", "SHADERC_SKIP_EXAMPLES=1",
     "-D", "SHADERC_SKIP_EXECUTABLES=1",
@@ -30,7 +30,9 @@ string[] linuxCMakeOptions = [
 string[] windowsCMakeOptions = [
     ..sharedCMakeOptions,
 
-    "-D", "CMAKE_TOOLCHAIN_FILE=cmake/linux-mingw-toolchain.cmake"
+    "-D", "CMAKE_TOOLCHAIN_FILE=cmake/linux-mingw-toolchain.cmake",
+    "-D", "MINGW_COMPILER_PREFIX=x86_64-w64-mingw32",
+    "-D", "SHADERC_ENABLE_SHARED_CRT=1"
 ];
 
 Task("Clean")
@@ -170,13 +172,19 @@ Task("Build")
                 );
 
                 CreateDirectory(shadercOutput.Combine("runtimes/win-x64/native"));
-                DockerCp(
-                    $"{containerID}:{EscapeFile(shadercContainerBuildPath.CombineWithFilePath("libshaderc/libshaderc_shared.dll"))}",
-                    EscapeDir(MakeAbsolute(shadercOutput.Combine("runtimes/win-x64/native"))),
-                    new() {
-                        FollowLink = true
-                    }
-                );
+
+                void CopyLibraryToHost(FilePath src) {
+                    DockerCp(
+                        $"{containerID}:{EscapeFile(src)}",
+                        EscapeDir(MakeAbsolute(shadercOutput.Combine("runtimes/win-x64/native"))),
+                        new() { FollowLink = true }
+                    );
+                }
+
+                CopyLibraryToHost(shadercContainerBuildPath.CombineWithFilePath("libshaderc/libshaderc_shared.dll"));
+                CopyLibraryToHost("/usr/lib/gcc/x86_64-w64-mingw32/10-win32/libgcc_s_seh-1.dll");
+                CopyLibraryToHost("/usr/lib/gcc/x86_64-w64-mingw32/10-win32/libstdc++-6.dll");
+                CopyLibraryToHost("/usr/x86_64-w64-mingw32/lib/libwinpthread-1.dll");
             }
         } finally {
             Information($"Removing container...");

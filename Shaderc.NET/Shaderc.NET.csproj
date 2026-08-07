@@ -31,11 +31,24 @@
 	<ItemGroup>
 		<None Include="runtimes/win-x64/native/libshaderc_shared.dll">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<TargetPath>runtimes/win-x64/native/libshaderc_shared.dll</TargetPath>
+			<TargetPath>libshaderc_shared.dll</TargetPath>
 		</None>
+		<None Include="runtimes/win-x64/native/libgcc_s_seh-1.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>libgcc_s_seh-1.dll</TargetPath>
+		</None>
+		<None Include="runtimes/win-x64/native/libstdc++-6.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>libstdc++-6.dll</TargetPath>
+		</None>
+		<None Include="runtimes/win-x64/native/libwinpthread-1.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>libwinpthread-1.dll</TargetPath>
+		</None>
+		
 		<None Include="runtimes/linux-x64/native/libshaderc_shared.so">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<TargetPath>runtimes/linux-x64/native/libshaderc_shared.so</TargetPath>
+			<TargetPath>libshaderc_shared.so</TargetPath>
 		</None>
 	</ItemGroup>
 </Project>
